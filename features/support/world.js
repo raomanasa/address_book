@@ -1,6 +1,6 @@
 const { setWorldConstructor } = require('cucumber')
 const { expect } = require('chai')
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer')  
 
 const HOME_PAGE = 'http://localhost:3000'
 
@@ -36,6 +36,12 @@ class AddressBookWorld {
     this.inputElement = await this.page.$(inputSelector)
     await this.inputElement.type(content)
   }
+  async checkContactStorageCount(expectedCount) {
+    const actualCount = await this.page.evaluate(
+      () => [JSON.parse(window.localStorage.getItem('contacts'))].length
+    )
+    expect(actualCount).to.be.eq(expectedCount)
+  }
 
   btnSelectorFromName(btnName) {
     switch (btnName) {
@@ -50,13 +56,13 @@ class AddressBookWorld {
         break
     }
   }
+  async pageDoesNotHaveTextContent(unexpectedContent) {
+    const pageContent = await this.page.content()
+    let actualContent = pageContent.match(unexpectedContent)
 
-  async checkContactStorageCount(expectedCount) {
-    const actualCount = await this.page.evaluate(
-      () => [JSON.parse(window.localStorage.getItem('contacts'))].length
-    )
-    expect(actualCount).to.be.eq(expectedCount)
+    expect(actualContent).to.be.eq(null)
   }
 }
+  
 
 setWorldConstructor(AddressBookWorld)

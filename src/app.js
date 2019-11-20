@@ -1,22 +1,13 @@
 const renderContacts = () => {
   const storage = window.localStorage
-  // Read all the contacts from the storage
   const contacts = JSON.parse(storage.getItem('contacts'))
-
-  // Select the container we will use to list the contacts 
   let div = document.querySelector('.contact-list')
 
   if (contacts) {
     div.innerHTML = ''
-
-    // render the contacts
-    
     const ul = document.createElement('ul')
 
-    // For every contact in our array of contacts, we will
-    // create a li element that will contain a card with
-    // all the information of the contact
-    contacts.forEach(contact => {
+   contacts.forEach(contact => {
       let li = document.createElement('li')
       li.innerHTML = `
         <div class="card">
@@ -32,50 +23,53 @@ const renderContacts = () => {
           </div>
         </div>
      `
-      // Add the contact's li to the unordered list we created earlier
       ul.appendChild(li)
     })
 
-    // Lastly, append the list to the contact-list container.
     div.appendChild(ul) 
   } else { 
     div.innerHTML = '<p>You have no contacts in your address book</p>' 
   }
 }
-renderContacts() // Add this line at the top of this function
 document.addEventListener('DOMContentLoaded', () => {
+  renderContacts();
   const addContactForm = document.querySelector('.new-contact-form')
   
-    // Register an event to listen for form submission
-    addContactForm.addEventListener('submit', event => {
-      // Disable default behavior when submitting form
-      event.preventDefault()
-      const storage = window.localStorage
-      // Get all inputs elements from the form
-      const {
-        name,
-        email,
-        phone,
-        company,
-        notes,
-        twitter,
-      } = addContactForm.elements
-  
-      // Create contact object
-      const contact = {
-        id: Date.now(),
-        name: name.value,
-        email: email.value,
-        phone: phone.value,
-        company: company.value,
-        notes: notes.value,
-        twitter: twitter.value,
-      }
-      
-  
-      console.log(`Saving the following contact: ${JSON.stringify(contact)}`)
-      storage.setItem('contacts', JSON.stringify(contact))
-      renderContacts() // Add it again after we store the contact
-    })
     
-  })
+  addContactForm.addEventListener('submit', event => {
+    event.preventDefault()
+    const storage = window.localStorage
+    
+    const {
+      name,
+      email,
+      phone,
+      company,
+      notes,
+      twitter,
+    } = addContactForm.elements
+
+  
+    const contact = {
+      id: Date.now(),
+      name: name.value,
+      email: email.value,
+      phone: phone.value,
+      company: company.value,
+      notes: notes.value,
+      twitter: twitter.value,
+    }
+    
+    console.log(contact)
+
+    let contacts = JSON.parse(storage.getItem('contacts')) || []
+
+    contacts.push(contact)
+
+    // 2. Save them to our storage
+    storage.setItem('contacts', JSON.stringify(contacts))
+    renderContacts()
+    contactForm.reset()   
+
+  })  
+})
