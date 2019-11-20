@@ -8,7 +8,7 @@ class AddressBookWorld {
   constructor() {}
 
   async openHomePage() {
-    this.browser = await puppeteer.launch({headless: false, slowmo: 100})
+    this.browser = await puppeteer.launch({headless: false, slowmo: 100000})
     this.page = await this.browser.newPage()
     await this.page.goto(HOME_PAGE)
   }
@@ -35,11 +35,19 @@ class AddressBookWorld {
     this.inputElement = await this.page.$(inputSelector)
     await this.inputElement.type(content)
   }
+  
   async checkContactStorageCount(expectedCount) {
     const actualCount = await this.page.evaluate(
       () => [JSON.parse(window.localStorage.getItem('contacts'))].length
     )
     expect(actualCount).to.be.eq(expectedCount)
+  }
+
+  async pageDoesNotHaveTextContent(unexpectedContent) {
+    const pageContent = await this.page.content()
+    let actualContent = pageContent.match(unexpectedContent)
+
+    expect(actualContent).to.be.eq(null)
   }
 
   btnSelectorFromName(btnName) {
@@ -54,12 +62,6 @@ class AddressBookWorld {
         throw `${btnName} button is not defined`
         break
     }
-  }
-  async pageDoesNotHaveTextContent(unexpectedContent) {
-    const pageContent = await this.page.content()
-    let actualContent = pageContent.match(unexpectedContent)
-
-    expect(actualContent).to.be.eq(null)
   }
 }
   

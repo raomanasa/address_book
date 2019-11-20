@@ -1,6 +1,8 @@
+const storage = window.localStorage
+
 const renderContacts = () => {
-  const storage = window.localStorage
   const contacts = JSON.parse(storage.getItem('contacts'))
+
   let div = document.querySelector('.contact-list')
 
   if (contacts) {
@@ -9,6 +11,7 @@ const renderContacts = () => {
 
    contacts.forEach(contact => {
       let li = document.createElement('li')
+
       li.innerHTML = `
         <div class="card">
           <div class="image">
@@ -31,6 +34,7 @@ const renderContacts = () => {
     div.innerHTML = '<p>You have no contacts in your address book</p>' 
   }
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   renderContacts();
   const addContactForm = document.querySelector('.new-contact-form')
@@ -38,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
   addContactForm.addEventListener('submit', event => {
     event.preventDefault()
-    const storage = window.localStorage
+   
     
     const {
       name,
@@ -66,10 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     contacts.push(contact)
 
-    // 2. Save them to our storage
     storage.setItem('contacts', JSON.stringify(contacts))
     renderContacts()
-    contactForm.reset()   
+    addContactForm.reset()   
 
   })  
 })
