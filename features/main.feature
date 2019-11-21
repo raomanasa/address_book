@@ -30,4 +30,5 @@
     And I should not see "You have no contacts in your address book"
     When I click "delete contact"
     Then I should see "Are you sure!"
+    Then I should have 1 contact in my address book
   

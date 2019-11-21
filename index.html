@@ -9,7 +9,8 @@
 </head>
 
 <body>
-  <h1>Contacts</h1>
+  <h1>MY ADDRESS BOOK</h1>
+  <h2>Contacts</h2>
   <button class="add-contact">Add Contact</button>
   <form class="new-contact-form" action="#">
     <label for="name">Name</label>
@@ -25,27 +26,25 @@
     <label for="twitter">Twitter</label>
     <input id="contact-twitter" name="twitter" type="text">
     <input class="save-contact" type="submit" value="Save contact">
-    <input class="delete-contact" type="submit" value="deleate contact" onclick="myFunction()">
+    </form>
 
-    <p id="demo"></p>
-
+    <p id="answer"></p>
     <script>
       function myFunction() {
-      var txt;
+      let txt;
       if (confirm("Are you sure!")) {
-      txt = "You pressed Ok!";
+      txt = "Ok!";
       } else {
-      txt = "You pressed Cancel!";
+      txt = "Delete Canceled";
       }
-      document.getElementById("demo").innerHTML = txt;
+      document.getElementById("answer").innerHTML = txt;
       }
     </script>
-    </form>
     
- <div class="contact-list">
+  <div class="contact-list">
       <p>You have no contacts in your address book</p>
-    </div>
-  <script src="./dist/bundle.js"></script
+  </div>
+  <script src="./dist/bundle.js"></script>
   
   
 </body>
