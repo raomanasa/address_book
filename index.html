@@ -25,12 +25,28 @@
     <label for="twitter">Twitter</label>
     <input id="contact-twitter" name="twitter" type="text">
     <input class="save-contact" type="submit" value="Save contact">
-  </form>
+    <input class="delete-contact" type="submit" value="deleate contact" onclick="myFunction()">
 
-  <div class="contact-list">
+    <p id="demo"></p>
+
+    <script>
+      function myFunction() {
+      var txt;
+      if (confirm("Are you sure!")) {
+      txt = "You pressed Ok!";
+      } else {
+      txt = "You pressed Cancel!";
+      }
+      document.getElementById("demo").innerHTML = txt;
+      }
+    </script>
+    </form>
+    
+ <div class="contact-list">
       <p>You have no contacts in your address book</p>
     </div>
-  <script src="./dist/bundle.js"></script>
+  <script src="./dist/bundle.js"></script
+  
   
 </body>
 
