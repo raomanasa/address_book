@@ -13,19 +13,20 @@ const renderContacts = () => {
       let li = document.createElement('li')
 
       li.innerHTML = `
-        <div class="card">
-          <div class="image">
-            <img src="https://ca-address-book.herokuapp.com/images/pine.jpg" />
+        <div class="ui special cards">
+          <div class="card">
+            <div class="image">
+              <img width= 250px; src="https://ca-address-book.herokuapp.com/images/pine.jpg" />
+            </div>
+            <button class="delete-contact" type="submit">Delete Contact</button>
+            <div class="content">
+              <h1>${ contact.name }</h1>
+              <h2>${ contact.company }</h2>
+              <p>${ contact.notes }</p> 
+              ${ contact.email } | 
+              <a href="https://www.twitter.com/${ contact.twitter}">@${contact.twitter}</a>
+            </div>
           </div>
-          <button class="delete-contact" type="submit" onclick="myFunction()">Delete Contact</button>
-          <div class="content">
-            <h1>${ contact.name }</h1>
-            <h2>${ contact.company }</h2>
-            <p>${ contact.notes }</p> 
-            ${ contact.email } | 
-            <a href="https://www.twitter.com/${ contact.twitter}">@${contact.twitter}</a>
-          </div>
-          <p id="answer"></p>
         </div>
      `
       ul.appendChild(li)
@@ -40,8 +41,30 @@ const renderContacts = () => {
 document.addEventListener('DOMContentLoaded', () => {
   renderContacts();
   const addContactForm = document.querySelector('.new-contact-form')
+  const deleteContact = document.querySelector('.contact-list')
+
   
+  deleteContact.addEventListener("click", function deleteUser(){
+    if (confirm("Are you sure!")) {
+      return true
+    } else {
+      return false
+    }
+  })
+  deleteUser();
+
+  let retrieveData = localStorage.getItem('contacts')
+  console.log(retrieveData);
+  let deleteUser = JSON.parse(retrievedData);
+  if (deleteUser() === true) {
+    deleteUser.splice(0,1)
+    localStorage.setItem('contacts',JSON.stringify(deleteUser))
+    renderContacts();
+  } else {
     
+  }
+  
+
   addContactForm.addEventListener('submit', event => {
     event.preventDefault()
    
@@ -65,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
       notes: notes.value,
       twitter: twitter.value,
     }
-    
+
     console.log(contact)
 
     let contacts = JSON.parse(storage.getItem('contacts')) || []
@@ -74,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     storage.setItem('contacts', JSON.stringify(contacts))
     renderContacts()
-    addContactForm.reset()   
-
+    addContactForm.reset()  
   })  
 })

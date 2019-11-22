@@ -21,7 +21,7 @@ Then('I fill in {string} with {string}', async function(field, content) {
 })
 
 Then('I should have {int} contact in my address book', async function (contactCount) {
-    return await this.checkContactStorageCount(contactCount)
+  return await this.checkContactStorageCount(contactCount)
 })
 
 Then('I should not see {string}', async function (content) {
