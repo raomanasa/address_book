@@ -5,20 +5,19 @@ const renderContacts = () => {
 
   let div = document.querySelector('.contact-list')
 
-  if (contacts) {
+  if (contacts && contacts.length > 0) {
     div.innerHTML = ''
-    const ul = document.createElement('ul')
-
-   contacts.forEach(contact => {
-      let li = document.createElement('li')
-
-      li.innerHTML = `
+    contacts.forEach(contact => {
+      let pos = contacts.indexOf(contact)
+      let cardDiv = document.createElement('div')
+      cardDiv.setAttribute('class', 'card')
+      cardDiv.innerHTML = `
         <div class="ui special cards">
           <div class="card">
             <div class="image">
               <img width= 250px; src="https://ca-address-book.herokuapp.com/images/pine.jpg" />
             </div>
-            <button class="delete-contact" type="submit">Delete Contact</button>
+            <button class="delete-contact" button id="remove-btn-${pos}">Delete Contact ${ contact.name }</button>
             <div class="content">
               <h1>${ contact.name }</h1>
               <h2>${ contact.company }</h2>
@@ -29,10 +28,9 @@ const renderContacts = () => {
           </div>
         </div>
      `
-      ul.appendChild(li)
+      div.appendChild(cardDiv)
     })
 
-    div.appendChild(ul) 
   } else { 
     div.innerHTML = '<p>You have no contacts in your address book</p>' 
   }
@@ -44,26 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteContact = document.querySelector('.contact-list')
 
   
-  deleteContact.addEventListener("click", function deleteUser(){
+  deleteContact.addEventListener('click', event => {
+    const storage = window.localStorage
+    const clickedButton = event.target.id
+    const contactNumber = clickedButton.replace('remove-btn-', '')
+    const deleteUser = JSON.parse(storage.getItem('contacts'))
     if (confirm("Are you sure!")) {
-      return true
+      deleteUser.splice(contactNumber, 1)
+      storage.setItem('contacts',JSON.stringify(deleteUser))
+      window.location.reload()
     } else {
       return false
     }
   })
-  deleteUser();
-
-  let retrieveData = localStorage.getItem('contacts')
-  console.log(retrieveData);
-  let deleteUser = JSON.parse(retrievedData);
-  if (deleteUser() === true) {
-    deleteUser.splice(0,1)
-    localStorage.setItem('contacts',JSON.stringify(deleteUser))
-    renderContacts();
-  } else {
-    
-  }
-  
 
   addContactForm.addEventListener('submit', event => {
     event.preventDefault()
@@ -90,13 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     console.log(contact)
-
     let contacts = JSON.parse(storage.getItem('contacts')) || []
-
     contacts.push(contact)
-
     storage.setItem('contacts', JSON.stringify(contacts))
+    document.getElementsByClassName('contact-form')
     renderContacts()
-    addContactForm.reset()  
+    location.reload()  
   })  
 })
